@@ -1,11 +1,9 @@
 # A2A Friend Scheduling Demo
-This document describes a multi-agent application demonstrating how to orchestrate conversations between different agents to schedule a meeting.
+This document describes a multi-agent application demonstrating how to orchestrate conversations between different agents to help users.
 
 This application contains four agents:
 *   **Host Agent**: The primary agent that orchestrates the scheduling task.
-*   **Kaitlynn Agent**: An agent representing Kaitlynn's calendar and preferences.
-*   **Nate Agent**: An agent representing Nate's calendar and preferences.
-*   **Karley Agent**: An agent representing Karley's calendar and preferences.
+*   **Math Agent**: An agent responsible for performing mathematical calculations or resolving scheduling conflicts that require arithmetic or logic.
 
 ## Setup and Deployment
 
@@ -26,9 +24,9 @@ GOOGLE_API_KEY="your_api_key_here"
 
 You will need to run each agent in a separate terminal window. The first time you run these commands, `uv` will create a virtual environment and install all necessary dependencies before starting the agent.
 
-### Terminal 1: Run Karley Agent
+### Terminal 1: Run Math Agent
 ```bash
-cd karley_agent_adk
+cd math_agent_adk
 uv venv
 source .venv/bin/activate
 uv run .

@@ -44,15 +44,15 @@ def main():
 
         capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
-            id="check_schedule",
-            name="Check Karley's Schedule",
-            description="Checks Karley's availability for a pickleball game on a given date.",
-            tags=["scheduling", "calendar"],
-            examples=["Is Karley free to play pickleball tomorrow?"],
+            id="math_agent",
+            name="Math Agent",
+            description="An agent that performs mathematical calculations and resolves scheduling conflicts that require arithmetic or logic.",
+            tags=["math", "scheduling"],
+            examples=["What is 10 + 10?"],
         )
         agent_card = AgentCard(
-            name="Karley Agent",
-            description="An agent that manages Karley's schedule for pickleball games.",
+            name="Math Agent",
+            description="An agent that performs mathematical calculations and resolves scheduling conflicts that require arithmetic or logic.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=["text/plain"],
