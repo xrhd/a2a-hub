@@ -11,7 +11,7 @@ from a2a.types import (
     AgentSkill,
 )
 from agent import create_agent
-from agent_executor import MathAgentExecutor
+from agent_executor import WebSearchAgentExecutor
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
@@ -33,7 +33,7 @@ class MissingAPIKeyError(Exception):
 def main():
     """Starts the agent server."""
     host = "localhost"
-    port = 10002
+    port = 10003
     try:
         # Check for API key only if Vertex AI is not configured
         if not os.getenv("GOOGLE_GENAI_USE_VERTEXAI") == "TRUE":
@@ -44,15 +44,15 @@ def main():
 
         capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
-            id="math_agent",
-            name="Math Agent",
-            description="An agent that performs mathematical calculations and resolves scheduling conflicts that require arithmetic or logic.",
-            tags=["math", "scheduling"],
-            examples=["What is 10 + 10?"],
+            id="web_search_agent",
+            name="Web Search Agent",
+            description="An agent that performs web searches and retrieves information.",
+            tags=["web", "search"],
+            examples=["What is the weather in Tokyo?"],
         )
         agent_card = AgentCard(
-            name="Math Agent",
-            description="An agent that performs mathematical calculations and resolves scheduling conflicts that require arithmetic or logic.",
+            name="Web Search Agent",
+            description="An agent that performs web searches and retrieves information.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=["text/plain"],
@@ -69,7 +69,7 @@ def main():
             session_service=InMemorySessionService(),
             memory_service=InMemoryMemoryService(),
         )
-        agent_executor = MathAgentExecutor(runner)
+        agent_executor = WebSearchAgentExecutor(runner)
 
         request_handler = DefaultRequestHandler(
             agent_executor=agent_executor,

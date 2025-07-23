@@ -222,9 +222,8 @@ def _get_initialized_host_agent_sync():
     async def _async_main():
         # Hardcoded URLs for the friend agents
         friend_agent_urls = [
-            "http://localhost:10002",  # Karley's Agent
-            "http://localhost:10003",  # Nate's Agent
-            "http://localhost:10004",  # Kaitlynn's Agent
+            "http://localhost:10002",  # Math Agent
+            "http://localhost:10003",  # Web Search Agent
         ]
 
         print("initializing host agent")

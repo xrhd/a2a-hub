@@ -6,7 +6,12 @@ from a2a.server.agent_execution.context import RequestContext
 from a2a.server.events.event_queue import EventQueue
 from a2a.server.tasks import TaskUpdater
 from a2a.types import (
+    FilePart,
+    FileWithBytes,
+    FileWithUri,
+    Part,
     TaskState,
+    TextPart,
     UnsupportedOperationError,
 )
 from a2a.utils.errors import ServerError
@@ -14,14 +19,12 @@ from google.adk import Runner
 from google.adk.events import Event
 from google.genai import types
 
-from commons.a2a import convert_a2a_parts_to_genai, convert_genai_parts_to_a2a
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class MathAgentExecutor(AgentExecutor):
-    """An AgentExecutor that runs the Math ADK-based Agent."""
+class WebSearchAgentExecutor(AgentExecutor):
+    """An AgentExecutor that runs Web Search Agent."""
 
     def __init__(self, runner: Runner):
         self.runner = runner
@@ -31,7 +34,7 @@ class MathAgentExecutor(AgentExecutor):
         self, session_id, new_message: types.Content
     ) -> AsyncGenerator[Event, None]:
         return self.runner.run_async(
-            session_id=session_id, user_id="math_agent", new_message=new_message
+            session_id=session_id, user_id="web_search_agent", new_message=new_message
         )
 
     async def _process_request(
@@ -94,14 +97,82 @@ class MathAgentExecutor(AgentExecutor):
 
     async def _upsert_session(self, session_id: str):
         session = await self.runner.session_service.get_session(
-            app_name=self.runner.app_name, user_id="math_agent", session_id=session_id
+            app_name=self.runner.app_name,
+            user_id="web_search_agent",
+            session_id=session_id,
         )
         if session is None:
             session = await self.runner.session_service.create_session(
                 app_name=self.runner.app_name,
-                user_id="math_agent",
+                user_id="web_search_agent",
                 session_id=session_id,
             )
         if session is None:
             raise RuntimeError(f"Failed to get or create session: {session_id}")
         return session
+
+
+def convert_a2a_parts_to_genai(parts: list[Part]) -> list[types.Part]:
+    """Convert a list of A2A Part types into a list of Google Gen AI Part types."""
+    return [convert_a2a_part_to_genai(part) for part in parts]
+
+
+def convert_a2a_part_to_genai(part: Part) -> types.Part:
+    """Convert a single A2A Part type into a Google Gen AI Part type."""
+    root = part.root
+    if isinstance(root, TextPart):
+        return types.Part(text=root.text)
+    if isinstance(root, FilePart):
+        if isinstance(root.file, FileWithUri):
+            return types.Part(
+                file_data=types.FileData(
+                    file_uri=root.file.uri, mime_type=root.file.mimeType
+                )
+            )
+        if isinstance(root.file, FileWithBytes):
+            return types.Part(
+                inline_data=types.Blob(
+                    data=root.file.bytes.encode("utf-8"),
+                    mime_type=root.file.mimeType or "application/octet-stream",
+                )
+            )
+        raise ValueError(f"Unsupported file type: {type(root.file)}")
+    raise ValueError(f"Unsupported part type: {type(part)}")
+
+
+def convert_genai_parts_to_a2a(parts: list[types.Part]) -> list[Part]:
+    """Convert a list of Google Gen AI Part types into a list of A2A Part types."""
+    return [
+        convert_genai_part_to_a2a(part)
+        for part in parts
+        if (part.text or part.file_data or part.inline_data)
+    ]
+
+
+def convert_genai_part_to_a2a(part: types.Part) -> Part:
+    """Convert a single Google Gen AI Part type into an A2A Part type."""
+    if part.text:
+        return Part(root=TextPart(text=part.text))
+    if part.file_data:
+        if not part.file_data.file_uri:
+            raise ValueError("File URI is missing")
+        return Part(
+            root=FilePart(
+                file=FileWithUri(
+                    uri=part.file_data.file_uri,
+                    mimeType=part.file_data.mime_type,
+                )
+            )
+        )
+    if part.inline_data:
+        if not part.inline_data.data:
+            raise ValueError("Inline data is missing")
+        return Part(
+            root=FilePart(
+                file=FileWithBytes(
+                    bytes=part.inline_data.data.decode("utf-8"),
+                    mimeType=part.inline_data.mime_type,
+                )
+            )
+        )
+    raise ValueError(f"Unsupported part type: {part}")

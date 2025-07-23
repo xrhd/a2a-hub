@@ -2,9 +2,9 @@
 # It tells uv that this project is a monorepo containing multiple packages.
 
 [project]
-name = "a2a-friend-scheduling"
+name = "host-agent"
 version = "0.1.0"
-description = "A multi-agent system for scheduling pickleball games."
+description = "A multi-agent orchestration system that coordinates user requests and delegates tasks to specialized agents."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
