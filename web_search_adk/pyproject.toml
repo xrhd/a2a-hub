@@ -9,4 +9,11 @@ dependencies = [
     "google-adk>=1.2.1",
     "python-dotenv",
     "uvicorn",
-]
+    "commons",
+] 
+
+[tool.uv.workspace]
+members = ["../commons"]
+
+[tool.uv.sources]
+commons = { workspace = true }
