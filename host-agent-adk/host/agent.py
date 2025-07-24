@@ -224,6 +224,7 @@ def _get_initialized_host_agent_sync():
         friend_agent_urls = [
             "http://localhost:10002",  # Math Agent
             "http://localhost:10003",  # Web Search Agent
+            "http://localhost:10004",  # Hello World Agent
         ]
 
         print("initializing host agent")

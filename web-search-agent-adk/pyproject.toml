@@ -1,14 +1,14 @@
 [project]
-name = "web-search-adk"
+name = "web-search-agent-adk"
 version = "0.1.0"
 description = "A specialized agent for performing web searches and retrieving information in the A2A project."
 readme = "README.md"
 requires-python = "~=3.13"
 dependencies = [
-    "a2a-sdk>=0.2.5",
-    "google-adk>=1.2.1",
-    "python-dotenv",
-    "uvicorn",
+    "a2a-sdk==0.2.5",
+    "google-adk==1.2.1",
+    "python-dotenv~=1.1.1",
+    "uvicorn~=0.35.0",
     "commons",
 ] 
 

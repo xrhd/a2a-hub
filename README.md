@@ -28,24 +28,18 @@ You will need to run each agent in a separate terminal window. The first time yo
 ### Terminal 1: Run Math Agent
 ```bash
 cd math_agent_adk
-uv venv
-source .venv/bin/activate
 uv run .
 ```
 
-### Terminal 1.1: Run Web Search Agent (Optional)
+### Terminal 2: Run Web Search Agent
 ```bash
 cd web_search_adk
-uv venv
-source .venv/bin/activate
 uv run .
 ```
 
-### Terminal 2: Run Host Agent
+### Terminal 3: Run Host Agent
 ```bash
 cd host_agent_adk
-uv venv
-source .venv/bin/activate
 uv run adk web      
 ```
 

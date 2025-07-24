@@ -20,18 +20,19 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class WebSearchAgentExecutor(AgentExecutor):
-    """An AgentExecutor that runs Web Search Agent."""
+class RunnerAgentExecutor(AgentExecutor):
+    """An AgentExecutor that runs the Math ADK-based Agent."""
 
-    def __init__(self, runner: Runner):
+    def __init__(self, runner: Runner, user_id: str = "runner_agent"):
         self.runner = runner
+        self.user_id = user_id
         self._running_sessions = {}
 
     def _run_agent(
         self, session_id, new_message: types.Content
     ) -> AsyncGenerator[Event, None]:
         return self.runner.run_async(
-            session_id=session_id, user_id="web_search_agent", new_message=new_message
+            session_id=session_id, user_id=self.user_id, new_message=new_message
         )
 
     async def _process_request(
@@ -94,14 +95,12 @@ class WebSearchAgentExecutor(AgentExecutor):
 
     async def _upsert_session(self, session_id: str):
         session = await self.runner.session_service.get_session(
-            app_name=self.runner.app_name,
-            user_id="web_search_agent",
-            session_id=session_id,
+            app_name=self.runner.app_name, user_id=self.user_id, session_id=session_id
         )
         if session is None:
             session = await self.runner.session_service.create_session(
                 app_name=self.runner.app_name,
-                user_id="web_search_agent",
+                user_id=self.user_id,
                 session_id=session_id,
             )
         if session is None:

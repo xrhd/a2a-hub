@@ -11,16 +11,17 @@ from a2a.types import (
     AgentSkill,
 )
 from agent import create_agent
-from agent_executor import WebSearchAgentExecutor
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 
+from commons.agent_executor import RunnerAgentExecutor
+
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -42,7 +43,7 @@ def main():
                     "GOOGLE_API_KEY environment variable not set and GOOGLE_GENAI_USE_VERTEXAI is not TRUE."
                 )
 
-        capabilities = AgentCapabilities(streaming=False)
+        capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
             id="web_search_agent",
             name="Web Search Agent",
@@ -62,6 +63,7 @@ def main():
         )
 
         adk_agent = create_agent()
+        logger.info(adk_agent)
         runner = Runner(
             app_name=agent_card.name,
             agent=adk_agent,
@@ -69,7 +71,7 @@ def main():
             session_service=InMemorySessionService(),
             memory_service=InMemoryMemoryService(),
         )
-        agent_executor = WebSearchAgentExecutor(runner)
+        agent_executor = RunnerAgentExecutor(runner)
 
         request_handler = DefaultRequestHandler(
             agent_executor=agent_executor,
