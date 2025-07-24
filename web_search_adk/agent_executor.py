@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-class MathAgentExecutor(AgentExecutor):
-    """An AgentExecutor that runs the Math ADK-based Agent."""
+class WebSearchAgentExecutor(AgentExecutor):
+    """An AgentExecutor that runs Web Search Agent."""
 
     def __init__(self, runner: Runner):
         self.runner = runner
@@ -31,7 +31,7 @@ class MathAgentExecutor(AgentExecutor):
         self, session_id, new_message: types.Content
     ) -> AsyncGenerator[Event, None]:
         return self.runner.run_async(
-            session_id=session_id, user_id="math_agent", new_message=new_message
+            session_id=session_id, user_id="web_search_agent", new_message=new_message
         )
 
     async def _process_request(
@@ -94,12 +94,14 @@ class MathAgentExecutor(AgentExecutor):
 
     async def _upsert_session(self, session_id: str):
         session = await self.runner.session_service.get_session(
-            app_name=self.runner.app_name, user_id="math_agent", session_id=session_id
+            app_name=self.runner.app_name,
+            user_id="web_search_agent",
+            session_id=session_id,
         )
         if session is None:
             session = await self.runner.session_service.create_session(
                 app_name=self.runner.app_name,
-                user_id="math_agent",
+                user_id="web_search_agent",
                 session_id=session_id,
             )
         if session is None:

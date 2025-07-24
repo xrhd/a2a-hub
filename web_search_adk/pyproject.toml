@@ -1,8 +1,9 @@
 [project]
-name = "math-agent"
+name = "web-search-adk"
 version = "0.1.0"
-description = "A specialized agent for performing mathematical computations and solving math-related queries in the A2A project."
-requires-python = ">=3.10"
+description = "A specialized agent for performing web searches and retrieving information in the A2A project."
+readme = "README.md"
+requires-python = ">=3.12"
 dependencies = [
     "a2a-sdk>=0.2.5",
     "google-adk>=1.2.1",

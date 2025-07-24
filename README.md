@@ -32,6 +32,14 @@ source .venv/bin/activate
 uv run .
 ```
 
+### Terminal 1.1: Run Web Search Agent (Optional)
+```bash
+cd web_search_adk
+uv venv
+source .venv/bin/activate
+uv run .
+```
+
 ### Terminal 2: Run Host Agent
 ```bash
 cd host_agent_adk
