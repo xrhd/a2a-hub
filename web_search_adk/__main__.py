@@ -42,7 +42,7 @@ def main():
                     "GOOGLE_API_KEY environment variable not set and GOOGLE_GENAI_USE_VERTEXAI is not TRUE."
                 )
 
-        capabilities = AgentCapabilities(streaming=True)
+        capabilities = AgentCapabilities(streaming=False)
         skill = AgentSkill(
             id="web_search_agent",
             name="Web Search Agent",

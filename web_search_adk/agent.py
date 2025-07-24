@@ -13,7 +13,7 @@ def create_agent() -> LlmAgent:
     """Constructs the ADK agent for Math."""
     return LlmAgent(
         name="web_search_agent",
-        model="gemini-2.5-flash",
+        model="gemini-2.0-flash",
         description=(
             "Agent that answers user questions by searching the web and providing clear, well-explained results."
         ),
