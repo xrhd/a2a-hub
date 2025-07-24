@@ -1366,8 +1366,8 @@ requires-dist = [
     { name = "a2a-sdk", specifier = "==0.2.5" },
     { name = "commons", editable = "../commons" },
     { name = "google-adk", specifier = "==1.2.1" },
-    { name = "python-dotenv" },
-    { name = "uvicorn" },
+    { name = "python-dotenv", specifier = "~=1.1.1" },
+    { name = "uvicorn", specifier = "~=0.35.0" },
 ]
 
 [[package]]
