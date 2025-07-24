@@ -1,4 +1,5 @@
-# A2A Friend Scheduling Demo
+# A2A Hub
+
 This document describes a multi-agent application demonstrating how to orchestrate conversations between different agents to help users.
 
 This application contains four agents:
