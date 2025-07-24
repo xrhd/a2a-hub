@@ -1,7 +1,7 @@
 [project]
-name = "web-search-adk"
+name = "hello-world-adk"
 version = "0.1.0"
-description = "A specialized agent for performing web searches and retrieving information in the A2A project."
+description = "A specialized agent that send greetings"
 readme = "README.md"
 requires-python = "~=3.13"
 dependencies = [

@@ -11,16 +11,17 @@ from a2a.types import (
     AgentSkill,
 )
 from agent import create_agent
-from agent_executor import WebSearchAgentExecutor
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 
+from commons.agent_executor import RunnerAgentExecutor
+
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +34,7 @@ class MissingAPIKeyError(Exception):
 def main():
     """Starts the agent server."""
     host = "localhost"
-    port = 10003
+    port = 10004
     try:
         # Check for API key only if Vertex AI is not configured
         if not os.getenv("GOOGLE_GENAI_USE_VERTEXAI") == "TRUE":
@@ -42,17 +43,17 @@ def main():
                     "GOOGLE_API_KEY environment variable not set and GOOGLE_GENAI_USE_VERTEXAI is not TRUE."
                 )
 
-        capabilities = AgentCapabilities(streaming=False)
+        capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
-            id="web_search_agent",
-            name="Web Search Agent",
-            description="An agent that performs web searches and retrieves information.",
-            tags=["web", "search"],
-            examples=["What is the weather in Tokyo?"],
+            id="hello_world_agent",
+            name="Hello World Agent",
+            description="An agent that greets the user with a friendly message.",
+            tags=["hello", "world"],
+            examples=["Hello, how are you?"],
         )
         agent_card = AgentCard(
-            name="Web Search Agent",
-            description="An agent that performs web searches and retrieves information.",
+            name="Hello World Agent",
+            description="An agent that greets the user with a friendly message.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=["text/plain"],
@@ -62,6 +63,7 @@ def main():
         )
 
         adk_agent = create_agent()
+        logger.info(adk_agent)
         runner = Runner(
             app_name=agent_card.name,
             agent=adk_agent,
@@ -69,7 +71,7 @@ def main():
             session_service=InMemorySessionService(),
             memory_service=InMemoryMemoryService(),
         )
-        agent_executor = WebSearchAgentExecutor(runner)
+        agent_executor = RunnerAgentExecutor(runner)
 
         request_handler = DefaultRequestHandler(
             agent_executor=agent_executor,

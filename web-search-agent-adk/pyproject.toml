@@ -1,0 +1,19 @@
+[project]
+name = "web-search-agent-adk"
+version = "0.1.0"
+description = "A specialized agent for performing web searches and retrieving information in the A2A project."
+readme = "README.md"
+requires-python = "~=3.13"
+dependencies = [
+    "a2a-sdk>=0.2.5",
+    "google-adk>=1.2.1",
+    "python-dotenv",
+    "uvicorn",
+    "commons",
+] 
+
+[tool.uv.workspace]
+members = ["../commons"]
+
+[tool.uv.sources]
+commons = { workspace = true }

@@ -2,7 +2,7 @@
 # It tells uv that this project is a monorepo containing multiple packages.
 
 [project]
-name = "host-agent"
+name = "host-agent-adk"
 version = "0.1.0"
 description = "A multi-agent orchestration system that coordinates user requests and delegates tasks to specialized agents."
 readme = "README.md"
