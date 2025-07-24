@@ -6,7 +6,7 @@ name = "host-agent"
 version = "0.1.0"
 description = "A multi-agent orchestration system that coordinates user requests and delegates tasks to specialized agents."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = "~=3.13"
 dependencies = [
     # Shared ADK & A2A Dependencies
     "google-adk>=1.2.1",
